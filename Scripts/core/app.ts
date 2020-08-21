@@ -315,8 +315,8 @@ File Description: Scripts to make the Slot Machine to work properly.
     });
 
     ExitButton.on("click", () => {
-      window.open("", "_parent", "");
-      window.close();
+      var customWindow = window.open("", "_blank", "");
+      customWindow.close();
       console.log("ExitButton Button Clicked");
     });
 
