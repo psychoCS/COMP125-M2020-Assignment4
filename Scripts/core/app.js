@@ -187,8 +187,8 @@ File Description: Scripts to make the Slot Machine to work properly.
             console.log("ResetButton Button Clicked");
         });
         ExitButton.on("click", () => {
-            var customWindow = window.open("", "_blank", "");
-            customWindow.close();
+            window.open("your current page URL", "_self", "");
+            window.close();
             console.log("ExitButton Button Clicked");
         });
         bet1Button.on("click", () => {
