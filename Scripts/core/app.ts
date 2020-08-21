@@ -18,6 +18,8 @@ File Description: Scripts to make the Slot Machine to work properly.
   let slotMachineBackground: Core.GameObject;
   let spinButton: UIObjects.Button;
   let bet1Button: UIObjects.Button;
+  let ResetButton: UIObjects.Button;
+  let ExitButton: UIObjects.Button;
   let bet10Button: UIObjects.Button;
   let bet100Button: UIObjects.Button;
   let betMaxButton: UIObjects.Button;
@@ -47,6 +49,8 @@ File Description: Scripts to make the Slot Machine to work properly.
     { id: "star", src: "./Assets/images/star.png" },
     { id: "bet_line", src: "./Assets/images/bet_line.gif" },
     { id: "bet1Button", src: "./Assets/images/bet1Button.png" },
+    { id: "ResetButton", src: "./Assets/images/ResetButton.png" },
+    { id: "ExitButton", src: "./Assets/images/ExitButton.png" },
     { id: "bet10Button", src: "./Assets/images/bet10Button.png" },
     { id: "bet100Button", src: "./Assets/images/bet100Button.png" },
     { id: "betMaxButton", src: "./Assets/images/betMaxButton.png" },
@@ -174,6 +178,22 @@ File Description: Scripts to make the Slot Machine to work properly.
     );
     stage.addChild(bet1Button);
 
+    ResetButton = new UIObjects.Button(
+      "ResetButton",
+      Config.Screen.CENTER_X - 126,
+      Config.Screen.CENTER_Y - 185,
+      true
+    );
+    stage.addChild(ResetButton);
+
+    ExitButton = new UIObjects.Button(
+      "ExitButton",
+      Config.Screen.CENTER_X + 126,
+      Config.Screen.CENTER_Y - 185,
+      true
+    );
+    stage.addChild(ExitButton);
+
     bet10Button = new UIObjects.Button(
       "bet10Button",
       Config.Screen.CENTER_X - 67,
@@ -287,6 +307,17 @@ File Description: Scripts to make the Slot Machine to work properly.
       leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
       middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
       rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
+    });
+
+    ResetButton.on("click", () => {
+      //document.getElementById("betLabel").reset() as HTMLImageElement;
+      console.log("ResetButton Button Clicked");
+    });
+
+    ExitButton.on("click", () => {
+      window.open("", "_parent", "");
+      window.close();
+      console.log("ExitButton Button Clicked");
     });
 
     bet1Button.on("click", () => {

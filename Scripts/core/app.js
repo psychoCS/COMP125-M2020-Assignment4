@@ -1,6 +1,6 @@
 /*
 
-Name: app.js
+Name: app.ts
 Author: Thiago Luiz Batista
 Student Number: 301110966
 Description: Assignment 4
@@ -10,7 +10,6 @@ Website: Thiago "Avengers" Slot machine
 File Description: Scripts to make the Slot Machine to work properly.
 
 */
-
 (function () {
     // Function scoped Variables
     let stage;
@@ -18,6 +17,8 @@ File Description: Scripts to make the Slot Machine to work properly.
     let slotMachineBackground;
     let spinButton;
     let bet1Button;
+    let ResetButton;
+    let ExitButton;
     let bet10Button;
     let bet100Button;
     let betMaxButton;
@@ -38,66 +39,24 @@ File Description: Scripts to make the Slot Machine to work properly.
     let star = 0;
     let shield = 0;
     let blanks = 0;
-    let manifest = [{
-            id: "background",
-            src: "./Assets/images/background.png"
-        },
-        {
-            id: "america",
-            src: "./Assets/images/america.png"
-        },
-        {
-            id: "thor",
-            src: "./Assets/images/thor.png"
-        },
-        {
-            id: "star",
-            src: "./Assets/images/star.png"
-        },
-        {
-            id: "bet_line",
-            src: "./Assets/images/bet_line.gif"
-        },
-        {
-            id: "bet1Button",
-            src: "./Assets/images/bet1Button.png"
-        },
-        {
-            id: "bet10Button",
-            src: "./Assets/images/bet10Button.png"
-        },
-        {
-            id: "bet100Button",
-            src: "./Assets/images/bet100Button.png"
-        },
-        {
-            id: "betMaxButton",
-            src: "./Assets/images/betMaxButton.png"
-        },
-        {
-            id: "blank",
-            src: "./Assets/images/blank.gif"
-        },
-        {
-            id: "iron",
-            src: "./Assets/images/iron.png"
-        },
-        {
-            id: "agamoto",
-            src: "./Assets/images/agamoto.png"
-        },
-        {
-            id: "hawk",
-            src: "./Assets/images/hawk.png"
-        },
-        {
-            id: "shield",
-            src: "./Assets/images/shield.png"
-        },
-        {
-            id: "spinButton",
-            src: "./Assets/images/spinButton.png"
-        },
+    let manifest = [
+        { id: "background", src: "./Assets/images/background.png" },
+        { id: "america", src: "./Assets/images/america.png" },
+        { id: "thor", src: "./Assets/images/thor.png" },
+        { id: "star", src: "./Assets/images/star.png" },
+        { id: "bet_line", src: "./Assets/images/bet_line.gif" },
+        { id: "bet1Button", src: "./Assets/images/bet1Button.png" },
+        { id: "ResetButton", src: "./Assets/images/ResetButton.png" },
+        { id: "ExitButton", src: "./Assets/images/ExitButton.png" },
+        { id: "bet10Button", src: "./Assets/images/bet10Button.png" },
+        { id: "bet100Button", src: "./Assets/images/bet100Button.png" },
+        { id: "betMaxButton", src: "./Assets/images/betMaxButton.png" },
+        { id: "blank", src: "./Assets/images/blank.gif" },
+        { id: "iron", src: "./Assets/images/iron.png" },
+        { id: "agamoto", src: "./Assets/images/agamoto.png" },
+        { id: "hawk", src: "./Assets/images/hawk.png" },
+        { id: "shield", src: "./Assets/images/shield.png" },
+        { id: "spinButton", src: "./Assets/images/spinButton.png" },
     ];
     // This function triggers first and "Preloads" all the assets
     function Preload() {
@@ -126,7 +85,8 @@ File Description: Scripts to make the Slot Machine to work properly.
     function checkRange(value, lowerBounds, upperBounds) {
         if (value >= lowerBounds && value <= upperBounds) {
             return value;
-        } else {
+        }
+        else {
             return !value;
         }
     }
@@ -174,7 +134,6 @@ File Description: Scripts to make the Slot Machine to work properly.
         }
         return betLine;
     }
-
     function buildInterface() {
         // Slot Machine Background
         slotMachineBackground = new Core.GameObject("background", Config.Screen.CENTER_X, Config.Screen.CENTER_Y, true);
@@ -184,6 +143,10 @@ File Description: Scripts to make the Slot Machine to work properly.
         stage.addChild(spinButton);
         bet1Button = new UIObjects.Button("bet1Button", Config.Screen.CENTER_X - 135, Config.Screen.CENTER_Y + 176, true);
         stage.addChild(bet1Button);
+        ResetButton = new UIObjects.Button("ResetButton", Config.Screen.CENTER_X - 126, Config.Screen.CENTER_Y - 185, true);
+        stage.addChild(ResetButton);
+        ExitButton = new UIObjects.Button("ExitButton", Config.Screen.CENTER_X + 126, Config.Screen.CENTER_Y - 185, true);
+        stage.addChild(ExitButton);
         bet10Button = new UIObjects.Button("bet10Button", Config.Screen.CENTER_X - 67, Config.Screen.CENTER_Y + 176, true);
         stage.addChild(bet10Button);
         bet100Button = new UIObjects.Button("bet100Button", Config.Screen.CENTER_X, Config.Screen.CENTER_Y + 176, true);
@@ -210,7 +173,6 @@ File Description: Scripts to make the Slot Machine to work properly.
         betLine = new Core.GameObject("bet_line", Config.Screen.CENTER_X, Config.Screen.CENTER_Y - 12, true);
         stage.addChild(betLine);
     }
-
     function interfaceLogic() {
         spinButton.on("click", () => {
             // reel test
@@ -219,6 +181,15 @@ File Description: Scripts to make the Slot Machine to work properly.
             leftReel.image = assets.getResult(reels[0]);
             middleReel.image = assets.getResult(reels[1]);
             rightReel.image = assets.getResult(reels[2]);
+        });
+        ResetButton.on("click", () => {
+            //document.getElementById("betLabel").reset() as HTMLImageElement;
+            console.log("ResetButton Button Clicked");
+        });
+        ExitButton.on("click", () => {
+            window.open("", "_parent", "");
+            window.close();
+            console.log("ExitButton Button Clicked");
         });
         bet1Button.on("click", () => {
             console.log("bet1Button Button Clicked");
