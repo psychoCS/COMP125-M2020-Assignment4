@@ -153,6 +153,27 @@ File Description: Scripts to make the Slot Machine to work properly.
     return betLine;
   }
 
+  function reset(): void {
+    stage.removeAllChildren();
+    stage.addChild(slotMachineBackground);
+    stage.addChild(spinButton);
+    stage.addChild(bet1Button);
+    stage.addChild(ResetButton);
+    stage.addChild(ExitButton);
+    stage.addChild(bet10Button);
+    stage.addChild(bet100Button);
+    stage.addChild(betMaxButton);
+    stage.addChild(jackPotLabel);
+    stage.addChild(creditLabel);
+    stage.addChild(winningsLabel);
+    stage.addChild(betLabel);
+    stage.addChild(leftReel);
+    stage.addChild(leftReel);
+    stage.addChild(middleReel);
+    stage.addChild(rightReel);
+    stage.addChild(betLine);
+  }
+
   function buildInterface(): void {
     // Slot Machine Background
     slotMachineBackground = new Core.GameObject(
@@ -255,7 +276,7 @@ File Description: Scripts to make the Slot Machine to work properly.
     stage.addChild(winningsLabel);
 
     betLabel = new UIObjects.Label(
-      "9999",
+      bet.toString(),
       "20px",
       "Consolas",
       "#FF0000",
@@ -313,6 +334,7 @@ File Description: Scripts to make the Slot Machine to work properly.
 
     ResetButton.on("click", () => {
       //document.getElementById("betLabel").reset() as HTMLImageElement;
+      reset();
       console.log("ResetButton Button Clicked");
     });
 
@@ -322,9 +344,7 @@ File Description: Scripts to make the Slot Machine to work properly.
       console.log("ExitButton Button Clicked");
     });
 
-    bet1Button.on("click", () => {
-      bet = bet + 1;
-    });
+    bet1Button.on("click", () => {});
 
     bet10Button.on("click", () => {
       console.log("bet10Button Button Clicked");
