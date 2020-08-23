@@ -161,7 +161,7 @@ File Description: Scripts to make the Slot Machine to work properly.
 
   /* This function calculates the player's winnings, if any */
   function determineWinnings() {
-    if ((blanks = 0)) {
+    if (blanks == 0) {
       winnings = bet * 0;
     }
 
@@ -240,7 +240,7 @@ File Description: Scripts to make the Slot Machine to work properly.
     }
   }
 
-  function Reset(): void {
+  function GlobalReset(): void {
     stage.removeAllChildren();
     jackpot = 100000;
     let totalCredit = 1000;
@@ -411,7 +411,7 @@ File Description: Scripts to make the Slot Machine to work properly.
   function interfaceLogic(): void {
     //Calling the reset method when the button is clicked
     ResetButton.on("click", () => {
-      Reset();
+      GlobalReset();
       console.log("ResetButton Button Clicked");
     });
 
@@ -422,7 +422,64 @@ File Description: Scripts to make the Slot Machine to work properly.
       console.log("ExitButton Button Clicked");
     });
 
-    credit = credit + winnings;
+    function creditReset(): void {
+      credit = credit + winnings;
+      stage.removeChild(totalCreditLabel);
+      stage.removeChild(creditLabel);
+      stage.removeChild(betLabel);
+    }
+
+    function labelReset(): void {
+      creditLabel = new UIObjects.Label(
+        credit.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X - 94,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(creditLabel);
+
+      betLabel = new UIObjects.Label(
+        bet.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(betLabel);
+    }
+
+    function gameOver(): void {
+      stage.removeChild(totalCreditLabel);
+      stage.removeChild(creditLabel);
+      stage.removeChild(betLabel);
+
+      // As well it will update the gui labels
+      creditLabel = new UIObjects.Label(
+        "GAME",
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X - 94,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(creditLabel);
+      betLabel = new UIObjects.Label(
+        "OVER",
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(betLabel);
+    }
 
     // Game Over Option
     if (credit == 0) {
@@ -458,61 +515,16 @@ File Description: Scripts to make the Slot Machine to work properly.
       //When the user press 'bet 1', it will refresh the value of the variables +-1
       bet1Button.on("click", () => {
         if (credit > 0) {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
+          creditReset();
 
-          credit = credit - 1;
+          credit = credit - 1 + winnings;
           bet = bet + 1;
 
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            credit.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
+          labelReset();
 
-          betLabel = new UIObjects.Label(
-            bet.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          // As well it will update the gui labels
         } else {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
-
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            "GAME",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
-          betLabel = new UIObjects.Label(
-            "OVER",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          gameOver();
         }
 
         console.log("bet1Button Button Clicked");
@@ -521,125 +533,34 @@ File Description: Scripts to make the Slot Machine to work properly.
       //When the user press 'bet 10', it will refresh the value of the variables +-10
       bet10Button.on("click", () => {
         if (credit > 0) {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
+          creditReset();
 
-          credit = credit - 10;
-          credit = credit + winnings;
+          credit = credit - 10 + winnings;
           bet = bet + 10;
 
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            credit.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
+          labelReset();
 
-          betLabel = new UIObjects.Label(
-            bet.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          // As well it will update the gui labels
         } else {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
-
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            "GAME",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
-          betLabel = new UIObjects.Label(
-            "OVER",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          gameOver();
         }
+
         console.log("bet10Button Button Clicked");
       });
 
       //When the user press 'bet 100', it will refresh the value of the variables +-100
       bet100Button.on("click", () => {
         if (credit > 0) {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
+          creditReset();
 
-          credit = credit - 100;
-          credit = credit + winnings;
+          credit = credit - 100 + winnings;
           bet = bet + 100;
 
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            credit.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
+          labelReset();
 
-          betLabel = new UIObjects.Label(
-            bet.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          // As well it will update the gui labels
         } else {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
-
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            "GAME",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
-          betLabel = new UIObjects.Label(
-            "OVER",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          gameOver();
         }
         console.log("bet100Button Button Clicked");
       });
@@ -647,62 +568,17 @@ File Description: Scripts to make the Slot Machine to work properly.
       //When the user press 'bet max', it will refresh the value of the variables by the total value that the user has
       betMaxButton.on("click", () => {
         if (credit > 0) {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
+          creditReset();
 
           bet = bet + credit;
           credit = credit - credit;
           credit = credit + winnings;
 
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            credit.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
+          labelReset();
 
-          betLabel = new UIObjects.Label(
-            bet.toString(),
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          // As well it will update the gui labels
         } else {
-          stage.removeChild(totalCreditLabel);
-          stage.removeChild(creditLabel);
-          stage.removeChild(betLabel);
-
-          // As well it will update the gui labels
-          creditLabel = new UIObjects.Label(
-            "GAME",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X - 94,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(creditLabel);
-          betLabel = new UIObjects.Label(
-            "OVER",
-            "20px",
-            "Consolas",
-            "#FF0000",
-            Config.Screen.CENTER_X,
-            Config.Screen.CENTER_Y + 108,
-            true
-          );
-          stage.addChild(betLabel);
+          gameOver();
         }
         console.log("betMaxButton Button Clicked");
       });
