@@ -24,12 +24,18 @@ File Description: Scripts to make the Slot Machine to work properly.
     let betMaxButton;
     let jackPotLabel;
     let creditLabel;
+    let totalCredit;
     let winningsLabel;
     let betLabel;
     let leftReel;
     let middleReel;
     let rightReel;
     let betLine;
+    // Game variables
+    let jackpot = 100000;
+    let credit = 1000;
+    let bet = 10;
+    let winnings = 0;
     // symbol tallies
     let agamoto = 0;
     let america = 0;
@@ -39,8 +45,6 @@ File Description: Scripts to make the Slot Machine to work properly.
     let star = 0;
     let shield = 0;
     let blanks = 0;
-    let jackpot = 0;
-    let bet = 0;
     let manifest = [
         { id: "background", src: "./Assets/images/background.png" },
         { id: "america", src: "./Assets/images/america.png" },
@@ -136,7 +140,60 @@ File Description: Scripts to make the Slot Machine to work properly.
         }
         return betLine;
     }
-    function reset() {
+    /* This function calculates the player's winnings, if any */
+    function determineWinnings() {
+        if (blanks == 0) {
+            if (agamoto == 3) {
+                winnings = bet * 10;
+            }
+            else if (america == 3) {
+                winnings = bet * 20;
+            }
+            else if (hawk == 3) {
+                winnings = bet * 30;
+            }
+            else if (iron == 3) {
+                winnings = bet * 40;
+            }
+            else if (thor == 3) {
+                winnings = bet * 50;
+            }
+            else if (star == 3) {
+                winnings = bet * 75;
+            }
+            else if (shield == 3) {
+                winnings = bet * 100;
+            }
+            else if (agamoto == 2) {
+                winnings = bet * 2;
+            }
+            else if (america == 2) {
+                winnings = bet * 2;
+            }
+            else if (hawk == 2) {
+                winnings = bet * 3;
+            }
+            else if (iron == 2) {
+                winnings = bet * 4;
+            }
+            else if (thor == 2) {
+                winnings = bet * 5;
+            }
+            else if (star == 2) {
+                winnings = bet * 10;
+            }
+            else if (shield == 2) {
+                winnings = bet * 20;
+            }
+            else if (shield == 1) {
+                winnings = bet * 5;
+            }
+            else {
+                winnings = bet * 1;
+            }
+        }
+    }
+    function Reset() {
         stage.removeAllChildren();
         stage.addChild(slotMachineBackground);
         stage.addChild(spinButton);
@@ -176,11 +233,11 @@ File Description: Scripts to make the Slot Machine to work properly.
         betMaxButton = new UIObjects.Button("betMaxButton", Config.Screen.CENTER_X + 67, Config.Screen.CENTER_Y + 176, true);
         stage.addChild(betMaxButton);
         // Labels
-        jackPotLabel = new UIObjects.Label(bet.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y - 175, true);
+        jackPotLabel = new UIObjects.Label(jackpot.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y - 175, true);
         stage.addChild(jackPotLabel);
-        creditLabel = new UIObjects.Label("99999999", "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
+        creditLabel = new UIObjects.Label(credit.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
         stage.addChild(creditLabel);
-        winningsLabel = new UIObjects.Label("99999999", "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X + 94, Config.Screen.CENTER_Y + 108, true);
+        winningsLabel = new UIObjects.Label(winnings.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X + 94, Config.Screen.CENTER_Y + 108, true);
         stage.addChild(winningsLabel);
         betLabel = new UIObjects.Label(bet.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y + 108, true);
         stage.addChild(betLabel);
@@ -203,10 +260,18 @@ File Description: Scripts to make the Slot Machine to work properly.
             leftReel.image = assets.getResult(reels[0]);
             middleReel.image = assets.getResult(reels[1]);
             rightReel.image = assets.getResult(reels[2]);
+            let totalCredit = credit - bet;
+            totalCredit = credit + winnings;
+            // Update gui
+            stage.removeChild(creditLabel);
+            stage.removeChild(winningsLabel);
+            creditLabel = new UIObjects.Label(totalCredit.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
+            stage.addChild(creditLabel);
+            winningsLabel = new UIObjects.Label(winnings.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X + 94, Config.Screen.CENTER_Y + 108, true);
+            stage.addChild(winningsLabel);
         });
         ResetButton.on("click", () => {
-            //document.getElementById("betLabel").reset() as HTMLImageElement;
-            reset();
+            Reset();
             console.log("ResetButton Button Clicked");
         });
         ExitButton.on("click", () => {
@@ -214,7 +279,12 @@ File Description: Scripts to make the Slot Machine to work properly.
             window.close();
             console.log("ExitButton Button Clicked");
         });
-        bet1Button.on("click", () => { });
+        bet1Button.on("click", () => {
+            let newBet = bet;
+            credit--;
+            newBet++;
+            console.log("bet1Button Button Clicked");
+        });
         bet10Button.on("click", () => {
             console.log("bet10Button Button Clicked");
         });
