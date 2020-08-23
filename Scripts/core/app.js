@@ -143,81 +143,98 @@ File Description: Scripts to make the Slot Machine to work properly.
     }
     /* This function calculates the player's winnings, if any */
     function determineWinnings() {
-        if (blanks == 0) {
-            if (agamoto == 3) {
-                winnings = bet * 10;
-            }
-            else if (america == 3) {
-                winnings = bet * 20;
-            }
-            else if (hawk == 3) {
-                winnings = bet * 30;
-            }
-            else if (iron == 3) {
-                winnings = bet * 40;
-            }
-            else if (thor == 3) {
-                winnings = bet * 50;
-            }
-            else if (star == 3) {
-                winnings = bet * 75;
-            }
-            else if (shield == 3) {
-                winnings = bet * 100;
-            }
-            else if (agamoto == 2) {
-                winnings = bet * 2;
-            }
-            else if (america == 2) {
-                winnings = bet * 2;
-            }
-            else if (hawk == 2) {
-                winnings = bet * 3;
-            }
-            else if (iron == 2) {
-                winnings = bet * 4;
-            }
-            else if (thor == 2) {
-                winnings = bet * 5;
-            }
-            else if (star == 2) {
-                winnings = bet * 10;
-            }
-            else if (shield == 2) {
-                winnings = bet * 20;
-            }
-            else if (shield == 1) {
-                winnings = bet * 5;
-            }
-            else {
-                winnings = bet * 1;
-            }
+        if ((blanks = 0)) {
+            winnings = bet * 0;
+        }
+        if (agamoto == 3) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 10;
+            stage.addChild(winningsLabel);
+        }
+        else if (america == 3) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 20;
+            stage.addChild(winningsLabel);
+        }
+        else if (hawk == 3) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 30;
+            stage.addChild(winningsLabel);
+        }
+        else if (iron == 3) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 40;
+            stage.addChild(winningsLabel);
+        }
+        else if (thor == 3) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 50;
+            stage.addChild(winningsLabel);
+        }
+        else if (star == 3) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 75;
+            stage.addChild(winningsLabel);
+        }
+        else if (shield == 3) {
+            stage.removeChild(winningsLabel);
+            alert("You Won the S.H.I.E.L.D $" + jackpot + " Jackpot!!");
+            winnings = bet + jackpot;
+            stage.addChild(winningsLabel);
+        }
+        else if (agamoto == 2) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 2;
+            stage.addChild(winningsLabel);
+        }
+        else if (america == 2) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 2;
+            stage.addChild(winningsLabel);
+        }
+        else if (hawk == 2) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 3;
+            stage.addChild(winningsLabel);
+        }
+        else if (iron == 2) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 4;
+            stage.addChild(winningsLabel);
+        }
+        else if (thor == 2) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 10;
+            stage.addChild(winningsLabel);
+        }
+        else if (star == 2) {
+            winnings = bet * 5;
+        }
+        else if (shield == 2) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 20;
+            stage.addChild(winningsLabel);
+        }
+        else if (shield == 1) {
+            stage.removeChild(winningsLabel);
+            winnings = bet * 5;
+            stage.addChild(winningsLabel);
+        }
+        else {
+            stage.removeChild(jackPotLabel);
+            jackpot = jackpot + bet;
+            jackPotLabel = new UIObjects.Label(jackpot.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y - 175, true);
+            stage.addChild(jackPotLabel);
         }
     }
     function Reset() {
         stage.removeAllChildren();
-        stage.addChild(slotMachineBackground);
-        stage.addChild(spinButton);
-        stage.addChild(bet1Button);
-        stage.addChild(ResetButton);
-        stage.addChild(ExitButton);
-        stage.addChild(bet10Button);
-        stage.addChild(bet100Button);
-        stage.addChild(betMaxButton);
-        stage.addChild(jackPotLabel);
-        stage.addChild(totalCreditLabel);
-        stage.addChild(winningsLabel);
-        stage.addChild(betLabel);
-        stage.addChild(leftReel);
-        stage.addChild(leftReel);
-        stage.addChild(middleReel);
-        stage.addChild(rightReel);
-        stage.addChild(betLine);
         jackpot = 100000;
         let totalCredit = 1000;
         credit = totalCredit;
         bet = 0;
         winnings = 0;
+        Main();
     }
     function buildInterface() {
         // Slot Machine Background
@@ -272,13 +289,23 @@ File Description: Scripts to make the Slot Machine to work properly.
             window.close();
             console.log("ExitButton Button Clicked");
         });
+        credit = credit + winnings;
+        if (credit == 0) {
+            stage.removeChild(totalCreditLabel);
+            stage.removeChild(creditLabel);
+            stage.removeChild(betLabel);
+            // As well it will update the gui labels
+            creditLabel = new UIObjects.Label("GAME", "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
+            stage.addChild(creditLabel);
+            betLabel = new UIObjects.Label("OVER", "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y + 108, true);
+            stage.addChild(betLabel);
+        }
         //When the user press 'bet 1', it will refresh the value of the variables +-1
         bet1Button.on("click", () => {
             if (credit > 0) {
                 stage.removeChild(totalCreditLabel);
                 stage.removeChild(creditLabel);
                 stage.removeChild(betLabel);
-                credit = credit + winnings;
                 credit = credit - 1;
                 bet = bet + 1;
                 // As well it will update the gui labels
@@ -381,6 +408,7 @@ File Description: Scripts to make the Slot Machine to work properly.
             console.log("betMaxButton Button Clicked");
         });
         spinButton.on("click", () => {
+            determineWinnings();
             // Reels calls the function to show the images.
             let reels = Reels();
             // example of how to replace the images in the reels
@@ -392,6 +420,16 @@ File Description: Scripts to make the Slot Machine to work properly.
             bet = 0;
             betLabel = new UIObjects.Label(bet.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y + 108, true);
             stage.addChild(betLabel);
+            // Calculate winnings
+            // Calculations
+            credit = credit - bet + winnings;
+            // Update gui
+            stage.removeChild(creditLabel);
+            stage.removeChild(winningsLabel);
+            creditLabel = new UIObjects.Label(credit.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
+            stage.addChild(creditLabel);
+            winningsLabel = new UIObjects.Label(winnings.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X + 94, Config.Screen.CENTER_Y + 108, true);
+            stage.addChild(winningsLabel);
         });
     }
     // app logic goes here
