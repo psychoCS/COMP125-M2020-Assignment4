@@ -423,13 +423,13 @@ File Description: Scripts to make the Slot Machine to work properly.
     });
 
     function creditReset(): void {
-      credit = credit + winnings;
+      credit = credit;
       stage.removeChild(totalCreditLabel);
       stage.removeChild(creditLabel);
       stage.removeChild(betLabel);
     }
 
-    function labelReset(): void {
+    function CreditLabel(): void {
       creditLabel = new UIObjects.Label(
         credit.toString(),
         "20px",
@@ -440,7 +440,8 @@ File Description: Scripts to make the Slot Machine to work properly.
         true
       );
       stage.addChild(creditLabel);
-
+    }
+    function BetLabel(): void {
       betLabel = new UIObjects.Label(
         bet.toString(),
         "20px",
@@ -451,6 +452,11 @@ File Description: Scripts to make the Slot Machine to work properly.
         true
       );
       stage.addChild(betLabel);
+    }
+
+    function labelReset(): void {
+      CreditLabel();
+      BetLabel();
     }
 
     function gameOver(): void {
@@ -517,7 +523,7 @@ File Description: Scripts to make the Slot Machine to work properly.
         if (credit > 0) {
           creditReset();
 
-          credit = credit - 1 + winnings;
+          credit = credit - 1;
           bet = bet + 1;
 
           labelReset();
@@ -535,7 +541,7 @@ File Description: Scripts to make the Slot Machine to work properly.
         if (credit > 0) {
           creditReset();
 
-          credit = credit - 10 + winnings;
+          credit = credit - 10;
           bet = bet + 10;
 
           labelReset();
@@ -553,7 +559,7 @@ File Description: Scripts to make the Slot Machine to work properly.
         if (credit > 0) {
           creditReset();
 
-          credit = credit - 100 + winnings;
+          credit = credit - 100;
           bet = bet + 100;
 
           labelReset();
@@ -583,50 +589,9 @@ File Description: Scripts to make the Slot Machine to work properly.
         console.log("betMaxButton Button Clicked");
       });
 
-      spinButton.on("click", () => {
-        determineWinnings();
-        // Reels calls the function to show the images.
-        let reels = Reels();
-
-        // example of how to replace the images in the reels
-        leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
-        middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
-        rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
-
-        //clear the bet to start over
-        stage.removeChild(betLabel);
-        bet = 0;
-        betLabel = new UIObjects.Label(
-          bet.toString(),
-          "20px",
-          "Consolas",
-          "#FF0000",
-          Config.Screen.CENTER_X,
-          Config.Screen.CENTER_Y + 108,
-          true
-        );
-        stage.addChild(betLabel);
-
-        // Calculate winnings
-
-        // Calculations
-        credit = credit - bet + winnings;
-
-        // Update gui
-        stage.removeChild(creditLabel);
+      function CleanWinnings() {
         stage.removeChild(winningsLabel);
-
-        creditLabel = new UIObjects.Label(
-          credit.toString(),
-          "20px",
-          "Consolas",
-          "#FF0000",
-          Config.Screen.CENTER_X - 94,
-          Config.Screen.CENTER_Y + 108,
-          true
-        );
-        stage.addChild(creditLabel);
-
+        winnings = 0;
         winningsLabel = new UIObjects.Label(
           winnings.toString(),
           "20px",
@@ -636,6 +601,35 @@ File Description: Scripts to make the Slot Machine to work properly.
           Config.Screen.CENTER_Y + 108,
           true
         );
+        stage.addChild(winningsLabel);
+      }
+
+      spinButton.on("click", () => {
+        CleanWinnings();
+
+        // Reels calls the function to show the images.
+        let reels = Reels();
+
+        // example of how to replace the images in the reels
+        leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
+        middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
+        rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
+
+        determineWinnings();
+
+        //clear the bet to start over
+        stage.removeChild(betLabel);
+        bet = 0;
+        BetLabel();
+
+        // Calculations
+        credit = credit - bet + winnings;
+
+        // Update gui
+        stage.removeChild(creditLabel);
+
+        CreditLabel();
+
         stage.addChild(winningsLabel);
       });
     }

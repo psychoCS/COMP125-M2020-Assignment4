@@ -290,16 +290,22 @@ File Description: Scripts to make the Slot Machine to work properly.
             console.log("ExitButton Button Clicked");
         });
         function creditReset() {
-            credit = credit + winnings;
+            credit = credit;
             stage.removeChild(totalCreditLabel);
             stage.removeChild(creditLabel);
             stage.removeChild(betLabel);
         }
-        function labelReset() {
+        function CreditLabel() {
             creditLabel = new UIObjects.Label(credit.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
             stage.addChild(creditLabel);
+        }
+        function BetLabel() {
             betLabel = new UIObjects.Label(bet.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y + 108, true);
             stage.addChild(betLabel);
+        }
+        function labelReset() {
+            CreditLabel();
+            BetLabel();
         }
         function gameOver() {
             stage.removeChild(totalCreditLabel);
@@ -328,7 +334,7 @@ File Description: Scripts to make the Slot Machine to work properly.
             bet1Button.on("click", () => {
                 if (credit > 0) {
                     creditReset();
-                    credit = credit - 1 + winnings;
+                    credit = credit - 1;
                     bet = bet + 1;
                     labelReset();
                     // As well it will update the gui labels
@@ -342,7 +348,7 @@ File Description: Scripts to make the Slot Machine to work properly.
             bet10Button.on("click", () => {
                 if (credit > 0) {
                     creditReset();
-                    credit = credit - 10 + winnings;
+                    credit = credit - 10;
                     bet = bet + 10;
                     labelReset();
                     // As well it will update the gui labels
@@ -356,7 +362,7 @@ File Description: Scripts to make the Slot Machine to work properly.
             bet100Button.on("click", () => {
                 if (credit > 0) {
                     creditReset();
-                    credit = credit - 100 + winnings;
+                    credit = credit - 100;
                     bet = bet + 100;
                     labelReset();
                     // As well it will update the gui labels
@@ -381,28 +387,30 @@ File Description: Scripts to make the Slot Machine to work properly.
                 }
                 console.log("betMaxButton Button Clicked");
             });
+            function CleanWinnings() {
+                stage.removeChild(winningsLabel);
+                winnings = 0;
+                winningsLabel = new UIObjects.Label(winnings.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X + 94, Config.Screen.CENTER_Y + 108, true);
+                stage.addChild(winningsLabel);
+            }
             spinButton.on("click", () => {
-                determineWinnings();
+                CleanWinnings();
                 // Reels calls the function to show the images.
                 let reels = Reels();
                 // example of how to replace the images in the reels
                 leftReel.image = assets.getResult(reels[0]);
                 middleReel.image = assets.getResult(reels[1]);
                 rightReel.image = assets.getResult(reels[2]);
+                determineWinnings();
                 //clear the bet to start over
                 stage.removeChild(betLabel);
                 bet = 0;
-                betLabel = new UIObjects.Label(bet.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y + 108, true);
-                stage.addChild(betLabel);
-                // Calculate winnings
+                BetLabel();
                 // Calculations
                 credit = credit - bet + winnings;
                 // Update gui
                 stage.removeChild(creditLabel);
-                stage.removeChild(winningsLabel);
-                creditLabel = new UIObjects.Label(credit.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
-                stage.addChild(creditLabel);
-                winningsLabel = new UIObjects.Label(winnings.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X + 94, Config.Screen.CENTER_Y + 108, true);
+                CreditLabel();
                 stage.addChild(winningsLabel);
             });
         }
