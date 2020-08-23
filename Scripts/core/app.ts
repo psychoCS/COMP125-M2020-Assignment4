@@ -41,6 +41,8 @@ File Description: Scripts to make the Slot Machine to work properly.
   let star = 0;
   let shield = 0;
   let blanks = 0;
+  let jackpot = 0;
+  let bet = 0;
 
   let manifest: Core.Item[] = [
     { id: "background", src: "./Assets/images/background.png" },
@@ -220,7 +222,7 @@ File Description: Scripts to make the Slot Machine to work properly.
 
     // Labels
     jackPotLabel = new UIObjects.Label(
-      "99999999",
+      bet.toString(),
       "20px",
       "Consolas",
       "#FF0000",
@@ -321,7 +323,7 @@ File Description: Scripts to make the Slot Machine to work properly.
     });
 
     bet1Button.on("click", () => {
-      console.log("bet1Button Button Clicked");
+      bet = bet + 1;
     });
 
     bet10Button.on("click", () => {

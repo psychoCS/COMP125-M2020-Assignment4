@@ -39,6 +39,8 @@ File Description: Scripts to make the Slot Machine to work properly.
     let star = 0;
     let shield = 0;
     let blanks = 0;
+    let jackpot = 0;
+    let bet = 0;
     let manifest = [
         { id: "background", src: "./Assets/images/background.png" },
         { id: "america", src: "./Assets/images/america.png" },
@@ -154,7 +156,7 @@ File Description: Scripts to make the Slot Machine to work properly.
         betMaxButton = new UIObjects.Button("betMaxButton", Config.Screen.CENTER_X + 67, Config.Screen.CENTER_Y + 176, true);
         stage.addChild(betMaxButton);
         // Labels
-        jackPotLabel = new UIObjects.Label("99999999", "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y - 175, true);
+        jackPotLabel = new UIObjects.Label(bet.toString(), "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X, Config.Screen.CENTER_Y - 175, true);
         stage.addChild(jackPotLabel);
         creditLabel = new UIObjects.Label("99999999", "20px", "Consolas", "#FF0000", Config.Screen.CENTER_X - 94, Config.Screen.CENTER_Y + 108, true);
         stage.addChild(creditLabel);
@@ -192,7 +194,7 @@ File Description: Scripts to make the Slot Machine to work properly.
             console.log("ExitButton Button Clicked");
         });
         bet1Button.on("click", () => {
-            console.log("bet1Button Button Clicked");
+            bet = bet + 1;
         });
         bet10Button.on("click", () => {
             console.log("bet10Button Button Clicked");
