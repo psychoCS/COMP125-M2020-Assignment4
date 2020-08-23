@@ -218,11 +218,11 @@ File Description: Scripts to make the Slot Machine to work properly.
     stage.addChild(rightReel);
     stage.addChild(betLine);
 
-    let jackpot = 100000;
+    jackpot = 100000;
     let totalCredit = 1000;
-    let credit = totalCredit;
-    let bet = 0;
-    let winnings = 0;
+    credit = totalCredit;
+    bet = 0;
+    winnings = 0;
   }
 
   function buildInterface(): void {
@@ -384,52 +384,74 @@ File Description: Scripts to make the Slot Machine to work properly.
   }
 
   function interfaceLogic(): void {
+    //Calling the reset method when the button is clicked
     ResetButton.on("click", () => {
       Reset();
       console.log("ResetButton Button Clicked");
     });
 
+    // Fake open a window, so we can close the page.
     ExitButton.on("click", () => {
       window.open("your current page URL", "_self", "");
       window.close();
       console.log("ExitButton Button Clicked");
     });
 
+    //When the user press 'bet 1', it will refresh the value of the variables +-1
     bet1Button.on("click", () => {
-      stage.removeChild(totalCreditLabel);
-      stage.removeChild(creditLabel);
-      stage.removeChild(betLabel);
+      if (credit > 0) {
+        stage.removeChild(totalCreditLabel);
+        stage.removeChild(creditLabel);
+        stage.removeChild(betLabel);
 
-      credit = credit - 1;
-      credit = credit + winnings;
-      bet = bet + 1;
+        credit = credit + winnings;
+        credit = credit - 1;
+        bet = bet + 1;
 
-      // Update gui
-      creditLabel = new UIObjects.Label(
-        credit.toString(),
-        "20px",
-        "Consolas",
-        "#FF0000",
-        Config.Screen.CENTER_X - 94,
-        Config.Screen.CENTER_Y + 108,
-        true
-      );
-      stage.addChild(creditLabel);
+        // As well it will update the gui labels
+        creditLabel = new UIObjects.Label(
+          credit.toString(),
+          "20px",
+          "Consolas",
+          "#FF0000",
+          Config.Screen.CENTER_X - 94,
+          Config.Screen.CENTER_Y + 108,
+          true
+        );
+        stage.addChild(creditLabel);
 
-      betLabel = new UIObjects.Label(
-        bet.toString(),
-        "20px",
-        "Consolas",
-        "#FF0000",
-        Config.Screen.CENTER_X,
-        Config.Screen.CENTER_Y + 108,
-        true
-      );
-      stage.addChild(betLabel);
+        betLabel = new UIObjects.Label(
+          bet.toString(),
+          "20px",
+          "Consolas",
+          "#FF0000",
+          Config.Screen.CENTER_X,
+          Config.Screen.CENTER_Y + 108,
+          true
+        );
+        stage.addChild(betLabel);
+      } else {
+        stage.removeChild(totalCreditLabel);
+        stage.removeChild(creditLabel);
+        stage.removeChild(betLabel);
+
+        // As well it will update the gui labels
+        creditLabel = new UIObjects.Label(
+          "game over",
+          "20px",
+          "Consolas",
+          "#FF0000",
+          Config.Screen.CENTER_X - 94,
+          Config.Screen.CENTER_Y + 108,
+          true
+        );
+        stage.addChild(creditLabel);
+      }
 
       console.log("bet1Button Button Clicked");
     });
 
+    //When the user press 'bet 10', it will refresh the value of the variables +-10
     bet10Button.on("click", () => {
       stage.removeChild(totalCreditLabel);
       stage.removeChild(creditLabel);
@@ -439,7 +461,7 @@ File Description: Scripts to make the Slot Machine to work properly.
       credit = credit + winnings;
       bet = bet + 10;
 
-      // Update gui
+      // As well it will update the gui labels
       creditLabel = new UIObjects.Label(
         credit.toString(),
         "20px",
@@ -464,6 +486,7 @@ File Description: Scripts to make the Slot Machine to work properly.
       console.log("bet10Button Button Clicked");
     });
 
+    //When the user press 'bet 100', it will refresh the value of the variables +-100
     bet100Button.on("click", () => {
       stage.removeChild(totalCreditLabel);
       stage.removeChild(creditLabel);
@@ -473,7 +496,7 @@ File Description: Scripts to make the Slot Machine to work properly.
       credit = credit + winnings;
       bet = bet + 100;
 
-      // Update gui
+      // As well it will update the gui labels
       creditLabel = new UIObjects.Label(
         credit.toString(),
         "20px",
@@ -498,29 +521,19 @@ File Description: Scripts to make the Slot Machine to work properly.
       console.log("bet100Button Button Clicked");
     });
 
+    //When the user press 'bet max', it will refresh the value of the variables by the total value that the user has
     betMaxButton.on("click", () => {
-      console.log("betMaxButton Button Clicked");
-    });
+      stage.removeChild(totalCreditLabel);
+      stage.removeChild(creditLabel);
+      stage.removeChild(betLabel);
 
-    spinButton.on("click", () => {
-      // reel test
-      let reels = Reels();
-
-      // example of how to replace the images in the reels
-      leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
-      middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
-      rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
-      /*
-      // Calculations
-      credit = credit - bet;
+      bet = bet + credit;
+      credit = credit - credit;
       credit = credit + winnings;
 
-      // Update gui
-      stage.removeChild(creditLabel);
-      stage.removeChild(winningsLabel);
-
+      // As well it will update the gui labels
       creditLabel = new UIObjects.Label(
-        totalCredit.toString(),
+        credit.toString(),
         "20px",
         "Consolas",
         "#FF0000",
@@ -530,18 +543,30 @@ File Description: Scripts to make the Slot Machine to work properly.
       );
       stage.addChild(creditLabel);
 
-      winningsLabel = new UIObjects.Label(
-        winnings.toString(),
+      betLabel = new UIObjects.Label(
+        bet.toString(),
         "20px",
         "Consolas",
         "#FF0000",
-        Config.Screen.CENTER_X + 94,
+        Config.Screen.CENTER_X,
         Config.Screen.CENTER_Y + 108,
         true
       );
-      stage.addChild(winningsLabel);*/
-      stage.removeChild(betLabel);
+      stage.addChild(betLabel);
+      console.log("betMaxButton Button Clicked");
+    });
 
+    spinButton.on("click", () => {
+      // Reels calls the function to show the images.
+      let reels = Reels();
+
+      // example of how to replace the images in the reels
+      leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
+      middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
+      rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
+
+      //clear the bet to start over
+      stage.removeChild(betLabel);
       bet = 0;
       betLabel = new UIObjects.Label(
         bet.toString(),
