@@ -384,55 +384,15 @@ File Description: Scripts to make the Slot Machine to work properly.
   }
 
   function interfaceLogic(): void {
-    spinButton.on("click", () => {
-      ResetButton.on("click", () => {
-        Reset();
-        console.log("ResetButton Button Clicked");
-      });
+    ResetButton.on("click", () => {
+      Reset();
+      console.log("ResetButton Button Clicked");
+    });
 
-      ExitButton.on("click", () => {
-        window.open("your current page URL", "_self", "");
-        window.close();
-        console.log("ExitButton Button Clicked");
-      });
-
-      // reel test
-      let reels = Reels();
-
-      // example of how to replace the images in the reels
-      leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
-      middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
-      rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
-      /*
-      // Calculations
-      credit = credit - bet;
-      credit = credit + winnings;
-
-      // Update gui
-      stage.removeChild(creditLabel);
-      stage.removeChild(winningsLabel);
-
-      creditLabel = new UIObjects.Label(
-        totalCredit.toString(),
-        "20px",
-        "Consolas",
-        "#FF0000",
-        Config.Screen.CENTER_X - 94,
-        Config.Screen.CENTER_Y + 108,
-        true
-      );
-      stage.addChild(creditLabel);
-
-      winningsLabel = new UIObjects.Label(
-        winnings.toString(),
-        "20px",
-        "Consolas",
-        "#FF0000",
-        Config.Screen.CENTER_X + 94,
-        Config.Screen.CENTER_Y + 108,
-        true
-      );
-      stage.addChild(winningsLabel);*/
+    ExitButton.on("click", () => {
+      window.open("your current page URL", "_self", "");
+      window.close();
+      console.log("ExitButton Button Clicked");
     });
 
     bet1Button.on("click", () => {
@@ -540,6 +500,59 @@ File Description: Scripts to make the Slot Machine to work properly.
 
     betMaxButton.on("click", () => {
       console.log("betMaxButton Button Clicked");
+    });
+
+    spinButton.on("click", () => {
+      // reel test
+      let reels = Reels();
+
+      // example of how to replace the images in the reels
+      leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
+      middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
+      rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
+      /*
+      // Calculations
+      credit = credit - bet;
+      credit = credit + winnings;
+
+      // Update gui
+      stage.removeChild(creditLabel);
+      stage.removeChild(winningsLabel);
+
+      creditLabel = new UIObjects.Label(
+        totalCredit.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X - 94,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(creditLabel);
+
+      winningsLabel = new UIObjects.Label(
+        winnings.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X + 94,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(winningsLabel);*/
+      stage.removeChild(betLabel);
+
+      bet = 0;
+      betLabel = new UIObjects.Label(
+        bet.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(betLabel);
     });
   }
 
