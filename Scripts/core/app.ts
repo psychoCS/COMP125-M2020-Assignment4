@@ -25,7 +25,7 @@ File Description: Scripts to make the Slot Machine to work properly.
   let betMaxButton: UIObjects.Button;
   let jackPotLabel: UIObjects.Label;
   let creditLabel: UIObjects.Label;
-  let totalCredit: UIObjects.Label;
+  let totalCreditLabel: UIObjects.Label;
   let winningsLabel: UIObjects.Label;
   let betLabel: UIObjects.Label;
   let leftReel: Core.GameObject;
@@ -35,8 +35,9 @@ File Description: Scripts to make the Slot Machine to work properly.
 
   // Game variables
   let jackpot = 100000;
-  let credit = 1000;
-  let bet = 10;
+  let totalCredit = 1000;
+  let credit = totalCredit;
+  let bet = 0;
   let winnings = 0;
 
   // symbol tallies
@@ -208,7 +209,7 @@ File Description: Scripts to make the Slot Machine to work properly.
     stage.addChild(bet100Button);
     stage.addChild(betMaxButton);
     stage.addChild(jackPotLabel);
-    stage.addChild(creditLabel);
+    stage.addChild(totalCreditLabel);
     stage.addChild(winningsLabel);
     stage.addChild(betLabel);
     stage.addChild(leftReel);
@@ -216,6 +217,12 @@ File Description: Scripts to make the Slot Machine to work properly.
     stage.addChild(middleReel);
     stage.addChild(rightReel);
     stage.addChild(betLine);
+
+    let jackpot = 100000;
+    let totalCredit = 1000;
+    let credit = totalCredit;
+    let bet = 0;
+    let winnings = 0;
   }
 
   function buildInterface(): void {
@@ -297,6 +304,17 @@ File Description: Scripts to make the Slot Machine to work properly.
     );
     stage.addChild(jackPotLabel);
 
+    totalCreditLabel = new UIObjects.Label(
+      totalCredit.toString(),
+      "20px",
+      "Consolas",
+      "#FF0000",
+      Config.Screen.CENTER_X - 94,
+      Config.Screen.CENTER_Y + 108,
+      true
+    );
+    stage.addChild(totalCreditLabel);
+
     creditLabel = new UIObjects.Label(
       credit.toString(),
       "20px",
@@ -367,6 +385,17 @@ File Description: Scripts to make the Slot Machine to work properly.
 
   function interfaceLogic(): void {
     spinButton.on("click", () => {
+      ResetButton.on("click", () => {
+        Reset();
+        console.log("ResetButton Button Clicked");
+      });
+
+      ExitButton.on("click", () => {
+        window.open("your current page URL", "_self", "");
+        window.close();
+        console.log("ExitButton Button Clicked");
+      });
+
       // reel test
       let reels = Reels();
 
@@ -374,9 +403,10 @@ File Description: Scripts to make the Slot Machine to work properly.
       leftReel.image = assets.getResult(reels[0]) as HTMLImageElement;
       middleReel.image = assets.getResult(reels[1]) as HTMLImageElement;
       rightReel.image = assets.getResult(reels[2]) as HTMLImageElement;
-
-      let totalCredit = credit - bet;
-      totalCredit = credit + winnings;
+      /*
+      // Calculations
+      credit = credit - bet;
+      credit = credit + winnings;
 
       // Update gui
       stage.removeChild(creditLabel);
@@ -402,32 +432,109 @@ File Description: Scripts to make the Slot Machine to work properly.
         Config.Screen.CENTER_Y + 108,
         true
       );
-      stage.addChild(winningsLabel);
-    });
-
-    ResetButton.on("click", () => {
-      Reset();
-      console.log("ResetButton Button Clicked");
-    });
-
-    ExitButton.on("click", () => {
-      window.open("your current page URL", "_self", "");
-      window.close();
-      console.log("ExitButton Button Clicked");
+      stage.addChild(winningsLabel);*/
     });
 
     bet1Button.on("click", () => {
-      let newBet = bet;
-      credit--;
-      newBet++;
+      stage.removeChild(totalCreditLabel);
+      stage.removeChild(creditLabel);
+      stage.removeChild(betLabel);
+
+      credit = credit - 1;
+      credit = credit + winnings;
+      bet = bet + 1;
+
+      // Update gui
+      creditLabel = new UIObjects.Label(
+        credit.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X - 94,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(creditLabel);
+
+      betLabel = new UIObjects.Label(
+        bet.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(betLabel);
+
       console.log("bet1Button Button Clicked");
     });
 
     bet10Button.on("click", () => {
+      stage.removeChild(totalCreditLabel);
+      stage.removeChild(creditLabel);
+      stage.removeChild(betLabel);
+
+      credit = credit - 10;
+      credit = credit + winnings;
+      bet = bet + 10;
+
+      // Update gui
+      creditLabel = new UIObjects.Label(
+        credit.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X - 94,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(creditLabel);
+
+      betLabel = new UIObjects.Label(
+        bet.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(betLabel);
       console.log("bet10Button Button Clicked");
     });
 
     bet100Button.on("click", () => {
+      stage.removeChild(totalCreditLabel);
+      stage.removeChild(creditLabel);
+      stage.removeChild(betLabel);
+
+      credit = credit - 100;
+      credit = credit + winnings;
+      bet = bet + 100;
+
+      // Update gui
+      creditLabel = new UIObjects.Label(
+        credit.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X - 94,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(creditLabel);
+
+      betLabel = new UIObjects.Label(
+        bet.toString(),
+        "20px",
+        "Consolas",
+        "#FF0000",
+        Config.Screen.CENTER_X,
+        Config.Screen.CENTER_Y + 108,
+        true
+      );
+      stage.addChild(betLabel);
       console.log("bet100Button Button Clicked");
     });
 
